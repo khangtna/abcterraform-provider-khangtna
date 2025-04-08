@@ -52,6 +52,15 @@ jobs:
         with:
           args: git --source=. --verbose --redact
 
+      - name: Install tfplugindocs
+        run: |
+          curl -sL https://github.com/hashicorp/terraform-plugin-docs/releases/latest/download/tfplugindocs_$(uname -s)_$(uname -m).zip -o tfplugindocs.zip
+          unzip tfplugindocs.zip -d tfplugindocs-bin
+          sudo mv tfplugindocs-bin/tfplugindocs /usr/local/bin/
+
+      - name: Generate Terraform provider documentation
+        run: tfplugindocs generate
+
 
   release:
     name: Release if test passed
