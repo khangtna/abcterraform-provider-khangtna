@@ -15,8 +15,8 @@ var (
 	version string = "1.0.0"
 )
 
-const awsSecret = "AKIA1234567890TESTKEY"
-const slackWebhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+const awsSecret = "AKIA1234567890TESTKEYAAA"
+const slackWebhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXXX"
 
 func main() {
 	var debug bool

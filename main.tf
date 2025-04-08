@@ -11,7 +11,7 @@ provider "vnpaycloud" {
   auth_url = "aaa"
   application_credential_id = "aaaa"
   application_credential_name = "tf_dev_for_code"
-  application_credential_secret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+  application_credential_secret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ29"
 }
 
 resource "vnpaycloud_volume" "volume_created_by_tf_thuannt" {
