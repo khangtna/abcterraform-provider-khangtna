@@ -54,9 +54,11 @@ jobs:
 
       - name: Install tfplugindocs
         run: |
-          curl -sL https://github.com/hashicorp/terraform-plugin-docs/releases/latest/download/tfplugindocs_$(uname -s)_$(uname -m).zip -o tfplugindocs.zip
+          curl -sL https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.21.0/tfplugindocs_0.21.0_linux_amd64.zip -o tfplugindocs.zip
           unzip tfplugindocs.zip -d tfplugindocs-bin
           sudo mv tfplugindocs-bin/tfplugindocs /usr/local/bin/
+          rm -rf tfplugindocs.zip
+          rm -rf tfplugindocs-bin
 
       - name: Generate Terraform provider documentation
         run: tfplugindocs generate
