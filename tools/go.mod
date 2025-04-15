@@ -1,6 +1,6 @@
 module git.infiniband.vn/cloud/third-party/terraform-provider-vnpaycloud/tools
 
-go 1.23.7
+go 1.23.3
 
 require (
 	github.com/hashicorp/copywrite v0.22.0
