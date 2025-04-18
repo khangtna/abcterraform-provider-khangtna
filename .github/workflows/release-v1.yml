@@ -1,0 +1,98 @@
+name: Release Terraform Provider
+
+# This GitHub action creates a release when a tag that matches the pattern
+# "v*" (e.g. v0.1.0) is created.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          args: --timeout=3m
+
+      - name: Run linters
+        uses: golangci/golangci-lint-action@4696ba8babb6127d732c3c6dde519db15edab9ea # v6.5.1
+        with:
+          version: latest
+          args: --timeout=3m
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: Run test
+        run: go test ./... -v
+
+      - name: Scan for secrets using gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: git --no-git --source=. --verbose --redact
+
+      - name: Install tfplugindocs
+        run: |
+          curl -sL https://github.com/hashicorp/terraform-plugin-docs/releases/download/v0.21.0/tfplugindocs_0.21.0_linux_amd64.zip -o tfplugindocs.zip
+          unzip tfplugindocs.zip -d tfplugindocs-bin
+          sudo mv tfplugindocs-bin/tfplugindocs /usr/local/bin/
+          rm -rf tfplugindocs.zip
+          rm -rf tfplugindocs-bin
+
+      - name: Generate Terraform provider documentation
+        run: tfplugindocs generate
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.3
+
+      - name: Generate Terraform provider documentation v2
+        run: |
+          cd tools/
+          go generate ./...
+          
+
+  release:
+    name: Release if test passed
+    needs: [test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # Allow goreleaser to access older tag information.
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: true
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
+        id: import_gpg
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3 # v6.2.1
+        with:
+          args: release --clean
+        env:
+          # GitHub sets the GITHUB_TOKEN secret automatically.
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+
+
