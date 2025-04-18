@@ -34,7 +34,7 @@ jobs:
           git config --local user.name gendocsbot
           git add docs/
           git commit -m "Generate new docs after ${GITHUB_REF#refs/tags/}"
-          git push
+          git push origin main --tags
 
   terraform-provider-release:
     name: 'Terraform Provider Release'
