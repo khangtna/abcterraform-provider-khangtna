@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   generate-documentation:
-    name: 'Generate Terraform provider documentation'
+    name: 'Generate documentation'
     runs-on: ubuntu-latest
     steps:
       - name: Setup Terraform
