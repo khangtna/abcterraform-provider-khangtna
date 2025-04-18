@@ -12,8 +12,29 @@ permissions:
   contents: write
 
 jobs:
+  generate-documentation:
+    name: 'Generate Terraform provider documentation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Generate Terraform provider documentation
+        run: |
+          cd tools/
+          go generate ./...
+      - run: |
+          git config --local user.email gendocsbot@vnpay.vn
+          git config --local user.name gendocsbot
+          git add docs/
+          git commit -m "Generate new docs after ${GITHUB_REF#refs/tags/}"
+          git push
+
   terraform-provider-release:
     name: 'Terraform Provider Release'
+    needs: [generate-documentation]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

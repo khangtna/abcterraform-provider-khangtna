@@ -1,6 +1,0 @@
-projectKey=vertix.be.iac.terraform-provider-release-sandbox
-serverUrl=https://sb-sq.infiniband.vn
-serverVersion=25.3.0.104237
-dashboardUrl=https://sb-sq.infiniband.vn/dashboard?id=vertix.be.iac.terraform-provider-release-sandbox
-ceTaskId=90047d74-17a7-4f22-b41b-0da9a34e1ae0
-ceTaskUrl=https://sb-sq.infiniband.vn/api/ce/task?id=90047d74-17a7-4f22-b41b-0da9a34e1ae0
