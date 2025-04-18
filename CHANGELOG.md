@@ -1,4 +1,5 @@
 ## 5.1.0 (Unreleased)
+## 5.1.0 (April 18, 2025)
 ## April 18, 2025
 
 ### Added
