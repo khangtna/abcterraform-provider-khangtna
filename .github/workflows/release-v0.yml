@@ -29,6 +29,10 @@ jobs:
         run: |
           cd tools/
           go generate ./...
+      - name: Scan for secrets using gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: git --no-git --source=. --verbose --redact
       - run: |
           git config --local user.email gendocsbot@vnpay.vn
           git config --local user.name gendocsbot
