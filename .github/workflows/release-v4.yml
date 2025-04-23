@@ -33,10 +33,10 @@
             cd tools/
             go generate ./...
             
-        - name: Scan for secrets using gitleaks
-          uses: gitleaks/gitleaks-action@v2
-          with:
-            args: detect --no-git --source=. --verbose --redact
+        # - name: Scan for secrets using gitleaks
+        #   uses: gitleaks/gitleaks-action@v2
+        #   with:
+        #     args: detect --no-git --source=. --verbose --redact
         
         - name: Scan for secrets using gitleaks V2
           run: |
