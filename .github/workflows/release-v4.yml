@@ -67,4 +67,18 @@
             # GitHub sets the GITHUB_TOKEN secret automatically.
             GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
             GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+
+        - name: Send success alert to Telegram
+          if: success() 
+          run: |
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=✅ GitHub Action succeeded. The Release draft successfully created for tag *${{ github.ref_name }}."
+
+        - name: Send failure alert to Telegram
+          if: failure() 
+          run: |
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=❌ GitHub Action failed for Release Terraform Provider on tag ${{ github.ref_name }}. Check the logs for details."
   
