@@ -74,7 +74,7 @@
         - name: Run GoReleaser
           uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3 # v6.2.1
           with:
-            args: release --clean
+            args: release --clean --skip-validate
           env:
             # GitHub sets the GITHUB_TOKEN secret automatically.
             GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
