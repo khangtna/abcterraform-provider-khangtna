@@ -32,9 +32,6 @@
           run: |
             cd tools/
             go generate ./...
-
-            cd ..
-            echo './docs' >> .gitignore
             
         - name: Scan for secrets using gitleaks
           uses: gitleaks/gitleaks-action@v2
@@ -42,9 +39,12 @@
             args: detect --no-git --source=. --verbose --redact
         
         - name: Scan for secrets using gitleaks V2
-          uses: gitleaks/gitleaks-action@v2
-          env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          run: |
+            curl -L https://github.com/zricethezav/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz -o gitleaks.tar.gz
+            tar -xzvf gitleaks.tar.gz
+            mv gitleaks /usr/local/bin/
+            gitleaks detect --no-git  --source=. --verbose --redact
+
   
         - name: Set up Go
           uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
