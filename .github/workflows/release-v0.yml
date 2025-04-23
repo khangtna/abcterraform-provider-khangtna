@@ -36,10 +36,10 @@ jobs:
       - run: |
           git config --local user.email gendocsbot@vnpay.vn
           git config --local user.name gendocsbot
-          git checkout main origin main
+          git checkout main 
           git add .
           git commit -m "Generate new docs after ${GITHUB_REF#refs/tags/}"
-          git push 
+          git push origin main
 
 # git tag -f ${GITHUB_REF#refs/tags/}
 # git push origin -f ${GITHUB_REF#refs/tags/}
