@@ -42,6 +42,8 @@
             RELEASE_BRANCH="release/${GITHUB_REF#refs/tags/}"
             git checkout -b "$RELEASE_BRANCH" 
 
+            git status
+
             git add .
             git commit -m "Generate new docs after ${GITHUB_REF#refs/tags/}"
             git push origin "$RELEASE_BRANCH"
