@@ -38,7 +38,7 @@ jobs:
           git config --local user.name gendocsbot
           git add .
           git commit -m "Generate new docs after ${GITHUB_REF#refs/tags/}"
-          git push origin main
+          git push 
 
 # git tag -f ${GITHUB_REF#refs/tags/}
 # git push origin -f ${GITHUB_REF#refs/tags/}
