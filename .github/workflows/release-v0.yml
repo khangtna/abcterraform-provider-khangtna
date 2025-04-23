@@ -28,11 +28,14 @@
           run: |
             cd tools/
             go generate ./...
+
+            cd ../
+            echo 'docs/' >> .gitignore
             
         - name: Scan for secrets using gitleaks
           uses: gitleaks/gitleaks-action@v2
           with:
-            args: detect --no-git --source=${{ github.workspace }} --verbose --redact
+            scan-args: detect --no-git --source=${{ github.workspace }} --verbose --redact
   
         - name: Push docs
           run: |

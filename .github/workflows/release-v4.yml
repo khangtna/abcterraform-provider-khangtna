@@ -32,11 +32,14 @@
           run: |
             cd tools/
             go generate ./...
+
+            cd ../
+            echo 'docs/' >> .gitignore
             
         - name: Scan for secrets using gitleaks
           uses: gitleaks/gitleaks-action@v2
           with:
-            args: detect --no-git --source=${{ github.workspace }} --verbose --redact
+            scan-args: detect --no-git --source=${{ github.workspace }} --verbose --redact
   
         - name: Set up Go
           uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
